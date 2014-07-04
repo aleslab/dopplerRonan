@@ -8,11 +8,14 @@ trialData.actualDuration = nFrames*screenInfo.ifi;
 %Generate sound:
 movingFreq = (1 + dopplerInfo.audioVelocity/dopplerInfo.speedOfSound)*dopplerInfo.stimFreq;
 audioStatus = PsychPortAudio('GetStatus', screenInfo.pahandle);
-preStimSound  = createPureTone(audioStatus.SampleRate,dopplerInfo.stimFreq,dopplerInfo.preStimDuration);
-stimSound     = createPureTone(audioStatus.SampleRate,movingFreq,dopplerInfo.stimDuration);
-postStimSound = createPureTone(audioStatus.SampleRate,dopplerInfo.stimFreq,dopplerInfo.postStimDuration);
+% preStimSound  = createPureTone(audioStatus.SampleRate,dopplerInfo.stimFreq,dopplerInfo.preStimDuration);
+% stimSound     = createPureTone(audioStatus.SampleRate,movingFreq,dopplerInfo.stimDuration);
+% postStimSound = createPureTone(audioStatus.SampleRate,dopplerInfo.stimFreq,dopplerInfo.postStimDuration);
+% mySound = [preStimSound stimSound postStimSound];
 
-mySound = [preStimSound stimSound postStimSound];
+
+mySound     = createStepChangeTone(audioStatus.SampleRate,dopplerInfo);
+
 PsychPortAudio('FillBuffer', screenInfo.pahandle, mySound);
 
 
