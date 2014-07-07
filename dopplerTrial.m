@@ -47,16 +47,21 @@ for iFrame = 1:nFrames
     
     [ trialData.pressed, trialData.firstPress]=KbQueueCheck(screenInfo.deviceIndex);    
     
+    %Pressed too early.  Abort trial and put in some default values in the
+    %returned data.
     if trialData.pressed
         trialData.pressed = false;
         trialData.firstPress = zeros(size(trialData.firstPress));        
-        
+        flipTimes(iFrame)=Screen('Flip', screenInfo.curWindow);
+        trialData.flipTimes = flipTimes;
         return;
     end
     
 end
-trialData.flipTimes = flipTimes;
+
 flipTimes(iFrame+1)= Screen('Flip', screenInfo.curWindow);
+trialData.flipTimes = flipTimes;
+
 curTime = GetSecs;
 KbQueueFlush(); %Flush any events that happend before the end of the trial
 %Now fire a busy loop to process any keypress durring the response window.
