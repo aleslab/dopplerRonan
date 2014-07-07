@@ -39,7 +39,7 @@ for iFrame = 1:nFrames
     %
     dopplerInfo.stimTime = min(max(thisTime,0),dopplerInfo.stimDuration);   
     stimRect = calculateStimSize(screenInfo,dopplerInfo);
-    Screen('fillOval', screenInfo.curWindow, [255 0 0], stimRect);
+    Screen('fillOval', screenInfo.curWindow, [60 0 0 180], stimRect);
     
     Screen('DrawingFinished',screenInfo.curWindow,screenInfo.dontclear);
     

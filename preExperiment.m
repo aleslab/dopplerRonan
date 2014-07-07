@@ -30,6 +30,7 @@ screenInfo.subjectDist=subjectDist;
 
 screenInfo.ifi = Screen('GetFlipInterval', screenInfo.curWindow);
  
+Screen('BlendFunction', screenInfo.curWindow,  GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
 InitializePsychSound
 

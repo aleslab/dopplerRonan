@@ -18,18 +18,18 @@ try
     dopplerInfo(1).isi              = 1;     %Inter Stimulus Interval
     dopplerInfo(1).responseDuration = 1;    %Post trial window for waiting for a response
     
-    dopplerInfo(1).visualVelocity = 0;   %Stimulus velocity in cm per second
-    dopplerInfo(1).audioVelocity  = 400;
+    dopplerInfo(1).visualVelocity = 200;   %Stimulus velocity in cm per second
+    dopplerInfo(1).audioVelocity  = 200;
     dopplerInfo(1).speedOfSound   = 34000; %speed of sound in cm per second
     dopplerInfo(1).stimRadiusCm   = 1;    %stimulus size in cm;
-    dopplerInfo(1).stimFreq       = 2000;  %Audio Stimulus frequency in Hz
+    dopplerInfo(1).stimFreq       = 500;  %Audio Stimulus frequency in Hz
     dopplerInfo(1).rampDuration   = 32/1000; %Ramp duration is around 1 video frame 16 ms
 
     %Condition 2: towards consistent
     dopplerInfo(2) = dopplerInfo(1); %Use the same settings for condition 1
     %Change the velocity values
-    dopplerInfo(2).visualVelocity = -0;   %Stimulus velocity in cm per second
-    dopplerInfo(2).audioVelocity  = -400;
+    dopplerInfo(2).visualVelocity = -200;   %Stimulus velocity in cm per second
+    dopplerInfo(2).audioVelocity  = -200;
     
     
     nConditions = length(dopplerInfo);
