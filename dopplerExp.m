@@ -21,7 +21,7 @@ try
     dopplerInfo(1).audioVelocity  = 200;
     dopplerInfo(1).speedOfSound   = 34000; %speed of sound in cm per second
     dopplerInfo(1).stimRadiusCm   = 1;    %stimulus size in cm;
-    dopplerInfo(1).stimFreq       = 1000;  %Audio Stimulus frequency in Hz
+    dopplerInfo(1).stimFreq       = 500;  %Audio Stimulus frequency in Hz
     dopplerInfo(1).rampDuration   = 32/1000; %Ramp duration is around 1 video frame 16 ms
 
     %Condition 2: towards consistent
