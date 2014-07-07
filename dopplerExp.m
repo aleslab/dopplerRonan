@@ -47,40 +47,54 @@ try
     keysOfInterest=zeros(1,256);
     keysOfInterest(KbName({'f' 'j' 'ESCAPE'}))=1;
     KbQueueCreate(screenInfo.deviceIndex, keysOfInterest);
-    KbQueueStart(deviceIndex);
+    KbQueueStart(screenInfo.deviceIndex);
     
     %Now lets begin the experiment and loop over the conditions to show.
     
     nTrials = nReps*nConditions;
     %
+    iTrial = 1;
     while iTrial <=length(conditionList)
-        
-        %ISI happens before a trial starts
-        WaitSecs(dopplerInfo(thisCond).isi);
+        validTrialList(iTrial)= true;  %initialize this index variable to keep track of bad/aborted trials
           
         thisCond = conditionList(iTrial);
-        
-        [trialData(iTrial)] = dopplerTrial(screenInfo,dopplerInfo(thisCond));
-        trialData(iTrial).condNumber = thisCond;
+                
+        %ISI happens before a trial starts
+        WaitSecs(dopplerInfo(thisCond).isi);
+
+        [trialData] = dopplerTrial(screenInfo,dopplerInfo(thisCond));
+        experimentData(iTrial).condNumber = thisCond;
         
         %Determine what should be done depending on keypresses
-        numKeysPressed = sum((trialData(iTrial).firstPress>0));
+        numKeysPressed = sum((trialData.firstPress>0))
         
         if numKeysPressed ~= 1  %No valid response made. Let's repeat that trial
         
+            %Should add a message to the subject that they were too slow.
             conditionList(end+1) = conditionList(iTrial);  
+            validTrialList(iTrial) = false;
+
             
         else %valid response made
             if trialData.firstPress(KbName('ESCAPE'))
                 %pressed escape lets abort experiment;
+                validTrialList(iTrial) = false;
                 break;
             elseif trialData.firstPress(KbName('f'))
-            elseif trialData.firstPress(KbName('g'))
+                experimentData(iTrial).response = 'f';
+                experimentData(iTrial).responseTime = ...
+                    trialData.firstPress(KbName('f'))-trialData.flipTimes(end);
+            elseif trialData.firstPress(KbName('j'))
+                experimentData(iTrial).response = 'j';
+                experimentData(iTrial).responseTime = ...
+                    trialData.firstPress(KbName('j'))-trialData.flipTimes(end);
             end
         end
         
-            
+      
+      experimentData(iTrial).trialData = trialData;
       iTrial = iTrial+1;
+      
     end
     
     

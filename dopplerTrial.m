@@ -29,7 +29,7 @@ dopplerInfo.stimStartTime = GetSecs; %Get current time to start the clock
 flipTimes = nan(nFrames,1);
 
 t1 = PsychPortAudio('Start', screenInfo.pahandle, 1, 0, 1);
- 
+KbQueueFlush();
 for iFrame = 1:nFrames
     
     thisTime =  GetSecs - dopplerInfo.stimStartTime-dopplerInfo.preStimDuration; 
@@ -45,22 +45,36 @@ for iFrame = 1:nFrames
     
     flipTimes(iFrame)=Screen('Flip', screenInfo.curWindow);
     
+    [ trialData.pressed, trialData.firstPress]=KbQueueCheck(screenInfo.deviceIndex);    
+    
+    if trialData.pressed
+        trialData.pressed = false;
+        trialData.firstPress = zeros(size(trialData.firstPress));        
+        
+        return;
+    end
     
 end
 trialData.flipTimes = flipTimes;
-Screen('Flip', screenInfo.curWindow);
+flipTimes(iFrame+1)= Screen('Flip', screenInfo.curWindow);
 curTime = GetSecs;
 KbQueueFlush(); %Flush any events that happend before the end of the trial
-while curTime<flipTimes(end)+dopplerInfo.responeDuration
-    [ trialData.pressed, trialData.firstPress]=KbQueueCheck(deviceIndex);    
+%Now fire a busy loop to process any keypress durring the response window.
+while curTime<flipTimes(end)+dopplerInfo.responseDuration
+    [ trialData.pressed, trialData.firstPress]=KbQueueCheck(screenInfo.deviceIndex);    
     if trialData.pressed
         break;
     end
     curTime = GetSecs;
 end
 
+
 %Reset times to be with respect to trial end.
-trialData.firstPress = trialData.firstPress-trialData.flipTimes(end);
+%trialData.firstPress = trialData.firstPress-trialData.flipTimes(end);
+
+end
+
+
 
 function stimRect = calculateStimSize(screenInfo,dopplerInfo)
 
