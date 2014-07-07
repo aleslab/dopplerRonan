@@ -15,8 +15,11 @@ audioStatus = PsychPortAudio('GetStatus', screenInfo.pahandle);
 
 
 mySound     = createStepChangeTone(audioStatus.SampleRate,dopplerInfo);
+%mySound     = createStepChangeHarmonic(audioStatus.SampleRate,dopplerInfo);
 
 PsychPortAudio('FillBuffer', screenInfo.pahandle, mySound);
+
+
 
 
 
@@ -39,14 +42,25 @@ for iFrame = 1:nFrames
     Screen('fillOval', screenInfo.curWindow, [255 0 0], stimRect);
     
     Screen('DrawingFinished',screenInfo.curWindow,screenInfo.dontclear);
+    
     flipTimes(iFrame)=Screen('Flip', screenInfo.curWindow);
     
     
 end
-
 trialData.flipTimes = flipTimes;
 Screen('Flip', screenInfo.curWindow);
+curTime = GetSecs;
+KbQueueFlush(); %Flush any events that happend before the end of the trial
+while curTime<flipTimes(end)+dopplerInfo.responeDuration
+    [ trialData.pressed, trialData.firstPress]=KbQueueCheck(deviceIndex);    
+    if trialData.pressed
+        break;
+    end
+    curTime = GetSecs;
 end
+
+%Reset times to be with respect to trial end.
+trialData.firstPress = trialData.firstPress-trialData.flipTimes(end);
 
 function stimRect = calculateStimSize(screenInfo,dopplerInfo)
 

@@ -36,4 +36,7 @@ InitializePsychSound
 screenInfo.pahandle = PsychPortAudio('Open', [], [], 0, [], 2);
 
 
+KbName('UnifyKeyNames');
+screenInfo.deviceIndex = [];
+
 end
