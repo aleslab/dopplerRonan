@@ -1,6 +1,6 @@
 function [trialData] = dopplerTrial(screenInfo, dopplerInfo)
 
-totalDuration = dopplerInfo.postStimDuration+dopplerInfo.stimDuration+dopplerInfo.postStimDuration;
+totalDuration = dopplerInfo.preStimDuration+dopplerInfo.stimDuration+dopplerInfo.postStimDuration;
 nFrames = round(totalDuration / screenInfo.ifi);
 trialData.actualDuration = nFrames*screenInfo.ifi;
 
@@ -29,7 +29,10 @@ dopplerInfo.stimStartTime = GetSecs; %Get current time to start the clock
 flipTimes = nan(nFrames,1);
 
 t1 = PsychPortAudio('Start', screenInfo.pahandle, 1, 0, 1);
-KbQueueFlush();
+ if screenInfo.useKbQueue
+     KbQueueFlush();
+ end
+ 
 for iFrame = 1:nFrames
     
     thisTime =  GetSecs - dopplerInfo.stimStartTime-dopplerInfo.preStimDuration; 
@@ -45,7 +48,13 @@ for iFrame = 1:nFrames
     
     flipTimes(iFrame)=Screen('Flip', screenInfo.curWindow);
     
-    [ trialData.pressed, trialData.firstPress]=KbQueueCheck(screenInfo.deviceIndex);    
+     if screenInfo.useKbQueue
+        [ trialData.pressed, trialData.firstPress]=KbQueueCheck(screenInfo.deviceIndex);
+    else
+        [ trialData.pressed, secs, keyCode]=KbCheck(screenInfo.deviceIndex);
+        trialData.firstPress = secs*keyCode;
+    end
+   
     
     %Pressed too early.  Abort trial and put in some default values in the
     %returned data.
@@ -63,10 +72,24 @@ flipTimes(iFrame+1)= Screen('Flip', screenInfo.curWindow);
 trialData.flipTimes = flipTimes;
 
 curTime = GetSecs;
-KbQueueFlush(); %Flush any events that happend before the end of the trial
+
+%Flush any events that happend before the end of the trial
+ if screenInfo.useKbQueue
+     KbQueueFlush();
+ end
+ 
 %Now fire a busy loop to process any keypress durring the response window.
 while curTime<flipTimes(end)+dopplerInfo.responseDuration
-    [ trialData.pressed, trialData.firstPress]=KbQueueCheck(screenInfo.deviceIndex);    
+    
+    
+    if screenInfo.useKbQueue
+        [ trialData.pressed, trialData.firstPress]=KbQueueCheck(screenInfo.deviceIndex);
+    else
+        [ trialData.pressed, secs, keyCode]=KbCheck(screenInfo.deviceIndex);
+        trialData.firstPress = secs*keyCode;
+    end
+    
+    
     if trialData.pressed
         break;
     end

@@ -1,14 +1,14 @@
 function [tone] = createStepChangeTone(samplingRate,dopplerInfo)
 % create a tone that changes between two values
 
-rampDuration =dopplerInfo.rampDuration; %Ramp duration is around 1 video frame 16 ms
-rampSamples = round(rampDuration*samplingRate);
+
 
 movingFreq = (1 + dopplerInfo.audioVelocity/dopplerInfo.speedOfSound)*dopplerInfo.stimFreq;
-duration = dopplerInfo.postStimDuration+dopplerInfo.stimDuration+dopplerInfo.postStimDuration;
+duration = dopplerInfo.preStimDuration+dopplerInfo.stimDuration+dopplerInfo.postStimDuration;
 
 t=linspace(0,duration,round(samplingRate*duration));
 f=ones(size(t))*dopplerInfo.stimFreq; %initialize f to hold the frequency modulation
+
 preStimLastSamp=round(samplingRate*dopplerInfo.preStimDuration);
 stimLastSamp   = round(samplingRate*dopplerInfo.stimDuration)+preStimLastSamp;
 preStimIdx  = 1:preStimLastSamp;
@@ -23,6 +23,11 @@ tone(stimIdx)    = sin(2*pi*movingFreq*t(stimIdx)+phase);
 phase = 2*pi*t(stimIdx(end))*(movingFreq-dopplerInfo.stimFreq)+phase;
 
 tone(postStimIdx)    = sin(2*pi*dopplerInfo.stimFreq*t(postStimIdx)+phase);
+
+
+% Old code that tried to simulate acceleration
+% rampDuration =dopplerInfo.rampDuration; %Ramp duration is around 1 video frame 16 ms
+% rampSamples = round(rampDuration*samplingRate);
 
 %f((preStimLastSamp+rampSamples): stimLastSamp) = movingFreq;
 
