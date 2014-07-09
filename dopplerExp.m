@@ -77,6 +77,9 @@ try
                 experimentData(iTrial).response = 'j';
                 experimentData(iTrial).responseTime = ...
                     trialData.firstPress(KbName('j'))-trialData.flipTimes(end);
+            else %Wait a minute this isn't a valid response
+                conditionList(end+1) = conditionList(iTrial);
+                validTrialList(iTrial) = false;
             end
         end
         
