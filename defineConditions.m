@@ -54,6 +54,7 @@ audioVelocityList  = [-200 -100 0 100 200  200   100 0 -100 -200];
 
 
 for iCond = 1:length(visualVelocityList)
+    dopplerInfo(iCond) = dopplerInfo(1);
     dopplerInfo(iCond).visualVelocity = visualVelocityList(iCond);
     dopplerInfo(iCond).audioVelocity = audioVelocityList(iCond);
 end

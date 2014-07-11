@@ -69,6 +69,7 @@ for iFrame = 1:nFrames
 end
 
 flipTimes(iFrame+1)= Screen('Flip', screenInfo.curWindow);
+PsychPortAudio('Stop', screenInfo.pahandle, 1);
 trialData.flipTimes = flipTimes;
 
 curTime = GetSecs;
