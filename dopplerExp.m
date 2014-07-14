@@ -4,7 +4,8 @@ try
     
     % For own laptop: monitorWidth = 34cm/1920pixels, subjectDist = 100cm,
     monitorWidth = 34; subjectDist = 200;
-    screenInfo = preExperiment(monitorWidth,subjectDist);
+    expScreen = max(Screen('Screens'))
+    screenInfo = preExperiment(monitorWidth,subjectDist,expScreen);
     
     
     screenInfo.useKbQueue = false;

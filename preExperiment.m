@@ -7,7 +7,16 @@ HideCursor
 if nargin < 3
     expScreen = 0;
 end
+
+%If we're running on a separate monitor assume that we want accurate
+%timings, but if we're run on the main desktop diasble synctests i.e. for
+%debugging on laptops
+if expScreen >0
+Screen('Preference', 'SkipSyncTests', 0);
+else    
 Screen('Preference', 'SkipSyncTests', 1);
+end
+
 Screen('Preference', 'VisualDebugLevel',2);
 
 % Set the background to the background value.
