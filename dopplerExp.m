@@ -8,7 +8,7 @@ try
     screenInfo = preExperiment(monitorWidth,subjectDist,expScreen);
     
     
-    screenInfo.useKbQueue = false;
+    screenInfo.useKbQueue = true;
     %     white = 1
     %     black = 0
     
@@ -46,7 +46,8 @@ try
     iTrial = 1;
     while iTrial <=length(conditionList)
         validTrialList(iTrial)= true;  %initialize this index variable to keep track of bad/aborted trials
-          
+        experimentData(iTrial).validTrial = true;
+        
         thisCond = conditionList(iTrial);
                 
         %ISI happens before a trial starts
@@ -63,12 +64,13 @@ try
             %Should add a message to the subject that they were too slow.
             conditionList(end+1) = conditionList(iTrial);  
             validTrialList(iTrial) = false;
-
+            experimentData(iTrial).validTrial = false;  
             
         else %valid response made
             if trialData.firstPress(KbName('ESCAPE'))
                 %pressed escape lets abort experiment;
                 validTrialList(iTrial) = false;
+                experimentData(iTrial).validTrial = false;
                 break;
             elseif trialData.firstPress(KbName('f'))
                 experimentData(iTrial).response = 'f';
@@ -81,6 +83,7 @@ try
             else %Wait a minute this isn't a valid response
                 conditionList(end+1) = conditionList(iTrial);
                 validTrialList(iTrial) = false;
+                experimentData(iTrial).validTrial = false;
             end
         end
         
