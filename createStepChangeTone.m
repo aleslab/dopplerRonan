@@ -1,4 +1,4 @@
-function [tone] = createStepChangeTone(samplingRate,dopplerInfo)
+function [tone] = createStepChangeTone(samplingRate,dopplerInfo,subjectDistance)
 % create a tone that changes between two values
 
 
@@ -24,6 +24,25 @@ phase = 2*pi*t(stimIdx(end))*(movingFreq-dopplerInfo.stimFreq)+phase;
 
 tone(postStimIdx)    = sin(2*pi*dopplerInfo.stimFreq*t(postStimIdx)+phase);
 
+
+
+% Code to change volume:
+
+initialVolume = .5;
+%dopplerInfo.audioVelocity
+finalDistance = subjectDistance-dopplerInfo.audioVelocity*dopplerInfo.stimDuration;
+
+objectDistance(preStimIdx) = subjectDistance;
+objectDistance(stimIdx)    = linspace(subjectDistance, finalDistance ,length(stimIdx));
+objectDistance(postStimIdx) = finalDistance;
+
+amplitudeFunction = 1./(objectDistance./subjectDistance).^2;
+amplitudeFunction = amplitudeFunction*initialVolume;
+
+%amplitudeFunction(1)
+%amplitudeFunction(stimLastSamp)
+
+tone = tone.*amplitudeFunction;
 
 % Old code that tried to simulate acceleration
 % rampDuration =dopplerInfo.rampDuration; %Ramp duration is around 1 video frame 16 ms

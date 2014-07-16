@@ -3,7 +3,7 @@ try
     sca;
     
     % For own laptop: monitorWidth = 34cm/1920pixels, subjectDist = 100cm,
-    monitorWidth = 34; subjectDist = 200;
+    monitorWidth = 34; subjectDist = 300;
     expScreen = max(Screen('Screens'))
     screenInfo = preExperiment(monitorWidth,subjectDist,expScreen);
     
@@ -19,7 +19,7 @@ try
     
     
     nConditions = length(dopplerInfo);
-    nReps = 3;
+    nReps = 5;
     
     %lets enumerate the total number of trials we need.
     conditionList = repmat(1:nConditions,1,nReps);

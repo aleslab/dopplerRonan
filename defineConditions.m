@@ -33,7 +33,7 @@ clear dopplerInfo;
 
 % %Condition definitions
 %Condition 1, lets set some defaults:
-dopplerInfo(1).stimDuration     = 0.30; %approximate stimulus duration in seconds
+dopplerInfo(1).stimDuration     = 0.15; %approximate stimulus duration in seconds
 dopplerInfo(1).preStimDuration  = 0.5;  %Static time before stimulus change
 dopplerInfo(1).postStimDuration = 0;  %static time aftter stimulus change
 dopplerInfo(1).isi              = 1;     %Inter Stimulus Interval
@@ -49,8 +49,15 @@ dopplerInfo(1).rampDuration   = 32/1000; %Ramp duration is around 1 video frame 
 %lets just code up the stimulus list by hand, first 5 are consistent 2nd 5
 %are inconsistent
 
-visualVelocityList = [-200 -100 0 100 200 -200  -100 0  100  200];
-audioVelocityList  = [-200 -100 0 100 200  200   100 0 -100 -200];
+% visualVelocityList = [-200 -100 0 100 200 -200  -100 0  100  200];
+% audioVelocityList  = [-200 -100 0 100 200  200   100 0 -100 -200];
+% visualVelocityList = [ 400    400 ];%-200 200 ]
+% audioVelocityList  = [400 -400 ];% 0   0 ]
+
+velocityList = [-300:50:50 50:50:300]
+visualVelocityList = [velocityList velocityList velocityList velocityList 0];
+audioVelocityList  = [velocityList velocityList+100 velocityList-100 -velocityList 0];
+
 
 
 for iCond = 1:length(visualVelocityList)

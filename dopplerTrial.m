@@ -14,7 +14,7 @@ audioStatus = PsychPortAudio('GetStatus', screenInfo.pahandle);
 % mySound = [preStimSound stimSound postStimSound];
 
 
-mySound     = createStepChangeTone(audioStatus.SampleRate,dopplerInfo);
+mySound     = createStepChangeTone(audioStatus.SampleRate,dopplerInfo,screenInfo.subjectDist);
 %mySound     = createStepChangeHarmonic(audioStatus.SampleRate,dopplerInfo);
 
 PsychPortAudio('FillBuffer', screenInfo.pahandle, mySound);
