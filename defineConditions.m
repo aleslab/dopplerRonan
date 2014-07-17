@@ -54,9 +54,9 @@ dopplerInfo(1).rampDuration   = 32/1000; %Ramp duration is around 1 video frame 
 % visualVelocityList = [ 400    400 ];%-200 200 ]
 % audioVelocityList  = [400 -400 ];% 0   0 ]
 
-velocityList = [-300:50:-50 50:50:300]
-visualVelocityList = [velocityList velocityList velocityList velocityList 0];
-audioVelocityList  = [velocityList velocityList+100 velocityList-100 -velocityList 0];
+velocityList = [-300:50:300]
+visualVelocityList = [velocityList velocityList velocityList velocityList];
+audioVelocityList  = [velocityList velocityList+150 velocityList-150 -velocityList];
 
 
 
