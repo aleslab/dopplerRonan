@@ -66,6 +66,11 @@ try
             validTrialList(iTrial) = false;
             experimentData(iTrial).validTrial = false;  
             
+        DrawFormattedText(screenInfo.curWindow, 'Invalid response','center', 'center', 125);
+        Screen('Flip', screenInfo.curWindow);
+        WaitSecs(.5)
+        Screen('Flip', screenInfo.curWindow);
+            
         else %valid response made
             if trialData.firstPress(KbName('ESCAPE'))
                 %pressed escape lets abort experiment;

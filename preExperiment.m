@@ -19,12 +19,13 @@ end
 
 Screen('Preference', 'VisualDebugLevel',2);
 
+
 % Set the background to the background value.
 screenInfo.bckgnd = 0;
 [screenInfo.curWindow, screenInfo.screenRect] = Screen('OpenWindow', expScreen, screenInfo.bckgnd,[],32, 2);
 screenInfo.dontclear = 0; % 1 gives incremental drawing (does not clear buffer after flip)
 topPriorityLevel = MaxPriority(screenInfo.curWindow);
-
+Screen('TextSize', screenInfo.curWindow, 60)
 %screenInfo.monRefresh = Screen(curWindow,'FrameRate');
 screenInfo.ifi =Screen('GetFlipInterval', screenInfo.curWindow);      % seconds per frame
 screenInfo.monRefresh = 1/screenInfo.ifi;    % frames per second
