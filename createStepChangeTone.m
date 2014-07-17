@@ -38,8 +38,11 @@ objectDistance(postStimIdx) = finalDistance;
 
 amplitudeFunction = 1./(objectDistance./subjectDistance).^2;
 amplitudeFunction = amplitudeFunction*initialVolume;
+%make a quick decay at the end to reduce the click artifacts for abrupt endings amplitude
+decayIdx = (length(t)-round(samplingRate*.0167)):length(t);
+amplitudeFunction(decayIdx) = linspace(amplitudeFunction(decayIdx(1)),0,length(decayIdx));
 
-%amplitudeFunction(1)
+
 %amplitudeFunction(stimLastSamp)
 
 tone = tone.*amplitudeFunction;
