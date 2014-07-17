@@ -36,7 +36,7 @@ objectDistance(preStimIdx) = subjectDistance;
 objectDistance(stimIdx)    = linspace(subjectDistance, finalDistance ,length(stimIdx));
 objectDistance(postStimIdx) = finalDistance;
 
-amplitudeFunction = 1./(objectDistance./subjectDistance).^2;
+amplitudeFunction = 1./(objectDistance./subjectDistance);
 amplitudeFunction = amplitudeFunction*initialVolume;
 %make a quick decay at the end to reduce the click artifacts for abrupt endings amplitude
 decayIdx = (length(t)-round(samplingRate*.0167)):length(t);
