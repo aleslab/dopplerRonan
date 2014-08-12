@@ -2,14 +2,6 @@
 clear all;
 
 userin = uigetfile('*.mat','MultiSelect','on')
-outputName = ['dopplerInfoSPSSOutput_MeanData' datestr(now,'yyyymmdd_HHMMSS') '.txt'];
-fidMean = fopen(outputName,'w');
-
-
-if fidMean==-1;
-    error(['Cannot open: ' outputName ' for writing']);
-end
-
 if ~iscell(userin);
     fnames{1} = userin;
 else
@@ -19,12 +11,31 @@ end
 conditionNames = {'con','+150','-150','inc'}
 condNameIdx = repmat(1:4,9,1);condNameIdx = condNameIdx(:);
 
-fprintf(fidMean,'filename\tconditionName\tvisualVelocity\tmeanresponse\tmeanresponseTime\n')
 for iName =1:length(fnames);
     
     tmpLoad =load(fnames{iName});
     
-    experimentData = tmpLoad.experimentData;
+        tmpLoad =load(fnames{iName});
+    
+    if iName ==1
+       experimentData = tmpLoad.experimentData; 
+    else
+        
+    experimentData = [experimentData tmpLoad.experimentData];
+    end
+end
+
+outputName = [fnames{end} '_SPSSOutput_MeanData' datestr(now,'yyyymmdd_HHMMSS') '.txt'];
+
+fidMean = fopen(outputName,'w');
+
+
+if fidMean==-1;
+    error(['Cannot open: ' outputName ' for writing']);
+end
+fprintf(fidMean,'filename\tconditionName\tvisualVelocity\tmeanresponse\tmeanresponseTime\n')
+
+
     
     validTrialList = [experimentData(:).validTrial];
     validData = experimentData(validTrialList);
@@ -63,11 +74,11 @@ for iName =1:length(fnames);
         
         thisCondName = conditionNames{condNameIdx(iCond)};
         fprintf(fidMean,'%s\t%s\t%f\t%f\t%f\n',fnames{iName}, thisCondName, ...
-            visualVelocity(iCond),meanResponse(iCond),meanResponseTime(iCond))
+            visualVelocity(iCond),meanResponse(iCond),meanResponseTime(iCond));
         
     end
     
     
-end
 
-fclose(fidMean)
+
+fclose(fidMean);
