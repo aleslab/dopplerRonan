@@ -1,7 +1,13 @@
 %function []=analyzeExperiment(experimentData,dopplerInfo)
+clear all;
 
-fnames = uigetfile('*.mat','MultiSelect','on')
+userin = uigetfile('*.mat','MultiSelect','on')
 
+if ~iscell(userin);
+    fnames{1} = userin;
+else
+    fnames = userin;
+end
 
 for iName =1:length(fnames);
    
@@ -16,8 +22,10 @@ for iName =1:length(fnames);
 end
     
 
-validTrialList = [experimentData(:).validTrial]
+validTrialList = [experimentData(:).validTrial];
 validData = experimentData(validTrialList);
+experimentData = validData;
+
 
 %Let's get our condition list.  NB tricky use of [] to pull out vector
 conditionOrder = [experimentData(:).condNumber];
@@ -27,6 +35,7 @@ for iCond = 1:nConditions
     
     %This finds which trial correponds to this condition.
     [condIdx] = find(conditionOrder==iCond);
+
     
     %Doing a lot with this line.  Gathering all the responses and recoding
     %any 'j' presses to the number 1;
