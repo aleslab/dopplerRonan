@@ -48,6 +48,9 @@ for iCond = 1:nConditions
     %Let's take a mean of the choice
     meanResponse(iCond)   = mean(perConditionData(iCond).responseList);
     meanResponseTime(iCond)   = mean(perConditionData(iCond).responseTimes);
+    
+    nAway(iCond) = sum(perConditionData(iCond).responseList);
+    nTowards(iCond) = sum(1-perConditionData(iCond).responseList);
     %This is a naive calculation of standard error (assuming gaussian, when data is binomial,
     %but useful for prelimplotting 
     stdErrResponse(iCond) = std(perConditionData(iCond).responseList)/sqrt(length(perConditionData(iCond).responseList));
@@ -68,6 +71,9 @@ end
 visVel = reshape(visualVelocity,9,4)
 audVel = reshape(audioVelocity,9,4)
 
+nAway = reshape(nAway,9,4);
+nTowards = reshape(nTowards,9,4);
+
 r = reshape(meanResponse,9,4)
 rStdE = reshape(stdErrResponse,9,4)
 rt= reshape(meanResponseTime,9,4)
@@ -75,7 +81,7 @@ rtStdE = reshape(stdErrResponse,9,4)
 
 figure(1)
 clf;
-errorbar(visVel,r,rStdE);
+errorbar(visVel,r,rStdE,'d','linewidth',3);
 legend('con','+150','-150','inc')
 
 figure(2)
@@ -126,4 +132,20 @@ legend('+150','-150','inc')
 % 
 % legend('con','+150','-150','inc')
 % xlabel('AUDIO velocity')
+colors = get(gca,'colororder');
+    figure(1)
+hold on;
+for i=1:4,
+    [u(i) v(i)] = FitCumNormYN(visualVelocity(1:9)',nAway(:,i),nTowards(:,i));
+    x = linspace(-200,200,100);
+    y = NormalCumulative(x,u(i),v(i));
+    plot(x,y,'color',colors(i,:),'linewidth',3)
+end
+
+disp('mean for: con, +150,-150,inc')
+[u]
+disp('variance for: con, +150,-150,inc')
+[v]
+
+
 
