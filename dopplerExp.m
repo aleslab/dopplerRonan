@@ -5,7 +5,7 @@ try
     subjectId='trial';
     saveFilename = [subjectId '_' datestr(now,'yyyymmdd_HHMMSS') '.mat'];
     % For own laptop: monitorWidth = 34cm/1920pixels, subjectDist = 100cm,
-    monitorWidth = 34; subjectDist = 300;
+    monitorWidth = 34; subjectDist = 75;
     expScreen = max(Screen('Screens'))
     screenInfo = preExperiment(monitorWidth,subjectDist,expScreen);
     
