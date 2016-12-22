@@ -2,7 +2,11 @@ try
     clear all
     sca;
     
-    subjectId='trial';
+    subjectId=input('Input participant id: ');
+    if isempty(subjectId)
+        subjectId = 'trial';
+    end
+    
     saveFilename = [subjectId '_' datestr(now,'yyyymmdd_HHMMSS') '.mat'];
     % For own laptop: monitorWidth = 34cm/1920pixels, subjectDist = 100cm,
     monitorWidth = 34; subjectDist = 75;
